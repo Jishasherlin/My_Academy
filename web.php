@@ -5,25 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MentorController;
 use App\Http\Controllers\ContactController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/home', [AuthController::class, 'home'])->name('home');
-
-
 Route::get('login',[AuthController::class, 'login'])->name('login');
 Route::post('login',[AuthController::class, 'loginPost'])->name('login.post');
 Route::get('register',[AuthController::class, 'register'])->name('register');
 Route::post('register',[AuthController::class, 'registerPost'])->name('register.post');
-
 
 // Everyone can see index
 Route::get('/course/index', [CourseController::class, 'index'])->name('course.index');
@@ -34,8 +21,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/course', [CourseController::class, 'store'])->name('course.store');
     Route::get('/course/{course}/edit', [CourseController::class, 'edit'])->name('course.edit');
     Route::put('/course/{course}/update', [CourseController::class, 'update'])->name('course.update');
-    Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
+    Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('course.destroy')->middleware('auth');
 });
+// routes/web.php
+Route::middleware('auth')->group(function () {
+    Route::get('/course/enroll/{id}', [CourseController::class, 'enroll'])->name('course.enroll');
+});
+
+
+Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/admin/dashboard', function () {
@@ -53,14 +47,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/mentor/{mentor}', [MentorController::class, 'destroy'])->name('mentor.destroy');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/contact', function () {
         return view('contact'); // resources/views/contact.blade.php
     })->name('contact');
-
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 });
 
-Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show')->middleware('auth');
