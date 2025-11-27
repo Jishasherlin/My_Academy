@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
 {
@@ -62,7 +63,6 @@ class CourseController extends Controller
             'level' => 'required|string|max:50',
             'syllabus' => 'required|string',
         ]);
-
         $course->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -76,7 +76,20 @@ class CourseController extends Controller
 
         return redirect()->route('course.index')->with('success', 'Course updated!');
     }
+public  function enroll(Course $course)
+    {
+        $user = auth()->user();
 
+        // Create an enquiry record
+        \App\Models\enquiry::create([
+            'user_id' => $user->id,
+            'course_id' => $course->id,
+        ]);
+
+        // Send notification email to admin
+            Mail::to('admin@example.com')->send(new \App\Mail\courseEnquiryMail($user, $course));
+    return redirect()->route('course.show', $course)->with('success', 'Enquiry sent successfully!');
+    }
     public function destroy(Course $course)
     {
         $course->delete();
