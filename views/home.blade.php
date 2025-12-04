@@ -1,0 +1,37 @@
+@extends('layout')
+@section('title', 'Home')
+@section('content')
+  @if (Auth::check() && strtolower(Auth::user()->role) === 'admin')
+                <h2 class="text-dark text-center m-4">Welcome Admin!!!</h2>
+            @endif
+<div id="demo" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1500">
+
+  <!-- Indicators/dots -->
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+  </div>
+
+  <!-- The slideshow/carousel -->
+  <div class="carousel-inner">
+    <div class="carousel-item active text-center">
+      <img src="{{ asset('images/image.png') }}" class="d-block mx-auto w-51 h-50">
+    </div>
+    <div class="carousel-item text-center">
+      <img src="{{ asset('images/img1.jpg') }}" class="d-block mx-auto w-51 h-50">
+    </div>
+    <div class="carousel-item text-center">
+      <img src="{{ asset('images/img2.jpg') }}" class="d-block mx-auto w-51 h-50">
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+@endsection
