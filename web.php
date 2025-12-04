@@ -21,13 +21,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/course', [CourseController::class, 'store'])->name('course.store');
     Route::get('/course/{course}/edit', [CourseController::class, 'edit'])->name('course.edit');
     Route::put('/course/{course}/update', [CourseController::class, 'update'])->name('course.update');
-    Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('course.destroy')->middleware('auth');
+    Route::delete('/course/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
 });
 // routes/web.php
 Route::middleware('auth')->group(function () {
-    Route::get('/course/enroll/{id}', [CourseController::class, 'enroll'])->name('course.enroll');
+    Route::get('/course/enroll/{course}', [CourseController::class, 'enroll'])->name('course.enroll');
 });
-
 
 Route::get('/course/{course}', [CourseController::class, 'show'])->name('course.show');
 
@@ -52,5 +51,9 @@ Route::middleware(['auth'])->group(function () {
         return view('contact'); // resources/views/contact.blade.php
     })->name('contact');
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [App\Http\Controllers\Admin\EnquiryController::class, 'index'])->name('admin.dashboard');
 });
 
