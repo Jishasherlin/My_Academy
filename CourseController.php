@@ -86,8 +86,6 @@ public  function enroll(Course $course)
             'course_id' => $course->id,
         ]);
 
-        // Send notification email to admin
-            Mail::to('admin@example.com')->send(new \App\Mail\courseEnquiryMail($user, $course));
     return redirect()->route('course.show', $course)->with('success', 'Enquiry sent successfully!');
     }
     public function destroy(Course $course)
