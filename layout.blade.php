@@ -34,6 +34,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('contact') }}">Contact</a>
                     </li>
+                    @if(Auth::check() && strtolower(Auth::user()->role) === 'admin')
+                    <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                        </li>
+                    @endif
                 </ul>
 
                 <ul class="navbar-nav">
@@ -106,4 +111,5 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-suxF/y4iG7v/D/S7L2fT4G5F+3n5O5s0lG9d8m7V5t5m5M9C6V1t9Z5Ff9V5t5h" crossorigin="anonymous"></script>
 </body>
+
 </html>
